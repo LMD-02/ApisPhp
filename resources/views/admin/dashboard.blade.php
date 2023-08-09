@@ -12,7 +12,7 @@
                             <div class="input-group mb-3 w-25 mr-3">
                                 <label for="select-course">Tìm kiếm</label>
                                 <select class="custom-select select-filter-role" id="select-course" name="courseName" >
-                                    <option selected>All...</option>
+                                    <option  value="" selected>All...</option>
                                         @foreach($data as $each)
                                             <option value="{{ $each->id }}">
 {{--                                                    @if ((string)$value === $selectedCourse) selected @endif>--}}
@@ -55,12 +55,26 @@
                                 <td>
                                     {{ $each->email }}
                                 </td>
+                                @if($each->facebook->status == 0)
                                 <td>
-                                    <button class="btn btn-sm btn-danger">Chặn</button>
+                                    <a href="{{route('updateStatus',['user_id'=> $each->id,'status'=>'-1','type'=>'facebook'])}}" class="btn btn-sm btn-danger">Chặn</a>
                                 </td>
+                                @else
                                 <td>
-                                    <button class="btn btn-sm btn-danger">Chặn</button>
+                                    <a href="{{route('updateStatus',['user_id'=> $each->id,'status'=>'0','type'=>'facebook'])}}" class="btn btn-sm btn-success">Bỏ chặn</a>
                                 </td>
+                                @endif
+                                @if($each->google->status == 0)
+                                <td>
+                                    <a href="{{route('updateStatus',['user_id'=> $each->id,'status'=>'-1','type'=>'google'])}}" class="btn btn-sm btn-danger">Chặn</a>
+                                </td>
+                                @else
+                                    <td>
+
+                                    <a href="{{route('updateStatus',['user_id'=> $each->id,'status'=>'0','type'=>'google'])}}" class="btn btn-sm btn-success">Bỏ chặn</a>
+                                    </td>
+
+                                @endif
                             </tr>
                         @endforeach
                         </tbody>

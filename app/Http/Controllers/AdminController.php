@@ -12,6 +12,18 @@ class AdminController extends Controller
 {
    public function index(){
        $users = DB::table('users')->where('id','!=',auth()->user()->id)->paginate();
+       foreach ($users as $user){
+           $user->facebook = DB::table('social_logins')->where('user_id',$user->id)->where('type','facebook')->first();
+           $user->google = DB::table('social_logins')->where('user_id',$user->id)->where('type','google')->first();
+       }
        return view('admin.dashboard',['data'=>$users]);
+   }
+
+   public function updateStatus(Request $request){
+         $id = $request->user_id;
+         $status = $request->status;
+         $type = $request->type;
+         DB::table('social_logins')->where('user_id',$id)->where('type',$type)->update(['status'=>$status]);
+         return redirect()->back();
    }
 }
