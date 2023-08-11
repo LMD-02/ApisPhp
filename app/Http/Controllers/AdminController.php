@@ -14,7 +14,9 @@ class AdminController extends Controller
        $users = DB::table('users')->where('id','!=',auth()->user()->id)->paginate();
        foreach ($users as $user){
            $user->facebook = DB::table('social_logins')->where('user_id',$user->id)->where('type','facebook')->first();
+           $user->facebookTime = DB::table('statistics')->where('user_id',$user->id)->where('type','facebook')->first()->time ?? 0;
            $user->google = DB::table('social_logins')->where('user_id',$user->id)->where('type','google')->first();
+           $user->googleTime = DB::table('statistics')->where('user_id',$user->id)->where('type','google')->first()->time ?? 0;
        }
        return view('admin.dashboard',['data'=>$users]);
    }

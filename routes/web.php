@@ -31,3 +31,10 @@ Route::post('/user-login-social', [UserController::class, 'loginSocial'])->name(
 Route::get('/user-facebook', [UserController::class, 'index'])->name('user.social.facebook');
 Route::get('/user-google', [UserController::class, 'index'])->name('user.social.google');
 
+
+
+Route::get('/social-facebook', [UserController::class, 'facebook'])->name('get.social.facebook');
+Route::get('/social-google', [UserController::class, 'google'])->name('get.social.google');
+
+Route::get('/logout-google', [UserController::class, 'logoutGoogle'])->name('out.social.google');
+Route::get('/logout-facebook', [UserController::class, 'logoutFacebook'])->name('out.social.facebook');
