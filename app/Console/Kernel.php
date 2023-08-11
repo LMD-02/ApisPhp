@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+            $schedule->command('reset-time:run')->daily();
          $schedule->command('check-time:run')->everyMinute();
     }
 
