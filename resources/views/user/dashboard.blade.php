@@ -20,6 +20,7 @@
                             <th>Ứng dụng</th>
                             <th>Tài khoản ứng dụng</th>
                             <th>Trạng thái</th>
+                            <th>thời gian sử dụng</th>
                             <th>#</th>
                         </tr>
                         </thead>
@@ -40,6 +41,7 @@
                                     {{$userSocial['google']->username}}
                                 @endif
                             </td>
+
                             @if(isset($sosial['google']))
 
                                 @if($sosial['google']->status == 0)
@@ -51,6 +53,14 @@
                                         Bị khóa
                                     </td>
                                 @endif
+                            @else
+                                <td >
+                                </td>
+                            @endif
+                            @if(isset($time['google']) && $time['google']->time != null)
+                                <td>{{$time['google']->time}}</td>
+                            @else
+                                <td></td>
                             @endif
                             <td>
                                 @if(isset($sosial['google']))
@@ -89,6 +99,14 @@
                                         Bị khóa
                                     </td>
                                 @endif
+                            @else
+                                <td >
+                                </td>
+                            @endif
+                            @if(isset($time['facebook']) && $time['facebook']->time != null)
+                            <td>{{$time['facebook']->time}}</td>
+                            @else
+                                <td></td>
                             @endif
                             <td>
                                 @if(isset($sosial['facebook']))
@@ -145,29 +163,29 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="col-md-12 mt-3 d-flex align-center flex-column">
-                                <label for="warning-fb">Cảnh báo</label>
-                                <div class="justify-content-center">
-                                    <input name="warning" type="radio"
-                                           @if(isset($userSocial['google']->warning) && $userSocial['google']->warning == 0)  checked
-                                           @endif  class="form-button" value="0"> <span class="mr-3">Tắt</span>
-                                    <input name="warning" type="radio"
-                                           @if(isset($userSocial['google']->warning) && $userSocial['google']->warning == 1) checked
-                                           @endif  class="form-button" value="1"> <span class="mr-3">Bật</span>
-                                </div>
-                            </div>
-                            <div class="col-md-12 mt-3 d-flex align-center flex-column">
-                                <label for="check-fb">Xác minh 2 bước</label>
-                                <div class="justify-content-center">
-                                    <input name="check"
-                                           @if(isset($userSocial['google']->two_factor) && $userSocial['google']->two_factor == 0)  checked
-                                           @endif type="radio" class="form-button" value="0"> <span
-                                        class="mr-3">Tắt</span>
-                                    <input name="check" type="radio"
-                                           @if(isset($userSocial['google']->two_factor) && $userSocial['google']->two_factor == 1)  checked
-                                           @endif   class="form-button" value="1"> <span class="mr-3">Bật</span>
-                                </div>
-                            </div>
+{{--                            <div class="col-md-12 mt-3 d-flex align-center flex-column">--}}
+{{--                                <label for="warning-fb">Cảnh báo</label>--}}
+{{--                                <div class="justify-content-center">--}}
+{{--                                    <input name="warning" type="radio"--}}
+{{--                                           @if(isset($userSocial['google']->warning) && $userSocial['google']->warning == 0)  checked--}}
+{{--                                           @endif  class="form-button" value="0"> <span class="mr-3">Tắt</span>--}}
+{{--                                    <input name="warning" type="radio"--}}
+{{--                                           @if(isset($userSocial['google']->warning) && $userSocial['google']->warning == 1) checked--}}
+{{--                                           @endif  class="form-button" value="1"> <span class="mr-3">Bật</span>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                            <div class="col-md-12 mt-3 d-flex align-center flex-column">--}}
+{{--                                <label for="check-fb">Xác minh 2 bước</label>--}}
+{{--                                <div class="justify-content-center">--}}
+{{--                                    <input name="check"--}}
+{{--                                           @if(isset($userSocial['google']->two_factor) && $userSocial['google']->two_factor == 0)  checked--}}
+{{--                                           @endif type="radio" class="form-button" value="0"> <span--}}
+{{--                                        class="mr-3">Tắt</span>--}}
+{{--                                    <input name="check" type="radio"--}}
+{{--                                           @if(isset($userSocial['google']->two_factor) && $userSocial['google']->two_factor == 1)  checked--}}
+{{--                                           @endif   class="form-button" value="1"> <span class="mr-3">Bật</span>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
                             <button class="mt-3 btn btn-success">Lưu thông tin</button>
                         </form>
                     </div>
@@ -206,29 +224,29 @@
                                                placeholder="Lưu ý tài chỉ được cấu hình tài khoản 1 lần duy nhất">
                                     @endif
                                 </div>
-                                <div class="col-md-12 mt-3 d-flex align-center flex-column">
-                                    <label for="warning-fb">Cảnh báo</label>
-                                    <div class="justify-content-center">
-                                        <input name="warning" type="radio"
-                                               @if(isset($userSocial['facebook']->warning ) && $userSocial['facebook']->warning == 0)  checked
-                                               @endif  class="form-button" value="0"> <span class="mr-3">Tắt</span>
-                                        <input name="warning" type="radio"
-                                               @if(isset($userSocial['facebook']->warning ) && $userSocial['facebook']->warning == 1)  checked
-                                               @endif  class="form-button" value="1"> <span class="mr-3">Bật</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 mt-3 d-flex align-center flex-column">
-                                    <label for="check-fb">Xác minh 2 bước</label>
-                                    <div class="justify-content-center">
-                                        <input name="check"
-                                               @if(isset($userSocial['facebook']->two_factor) && $userSocial['facebook']->two_factor == 0)  checked
-                                               @endif type="radio" class="form-button" value="0"> <span
-                                            class="mr-3">Tắt</span>
-                                        <input name="check" type="radio"
-                                               @if(isset($userSocial['facebook']->two_factor) && $userSocial['facebook']->two_factor == 1)  checked
-                                               @endif   class="form-button" value="1"> <span class="mr-3">Bật</span>
-                                    </div>
-                                </div>
+{{--                                <div class="col-md-12 mt-3 d-flex align-center flex-column">--}}
+{{--                                    <label for="warning-fb">Cảnh báo</label>--}}
+{{--                                    <div class="justify-content-center">--}}
+{{--                                        <input name="warning" type="radio"--}}
+{{--                                               @if(isset($userSocial['facebook']->warning ) && $userSocial['facebook']->warning == 0)  checked--}}
+{{--                                               @endif  class="form-button" value="0"> <span class="mr-3">Tắt</span>--}}
+{{--                                        <input name="warning" type="radio"--}}
+{{--                                               @if(isset($userSocial['facebook']->warning ) && $userSocial['facebook']->warning == 1)  checked--}}
+{{--                                               @endif  class="form-button" value="1"> <span class="mr-3">Bật</span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                                <div class="col-md-12 mt-3 d-flex align-center flex-column">--}}
+{{--                                    <label for="check-fb">Xác minh 2 bước</label>--}}
+{{--                                    <div class="justify-content-center">--}}
+{{--                                        <input name="check"--}}
+{{--                                               @if(isset($userSocial['facebook']->two_factor) && $userSocial['facebook']->two_factor == 0)  checked--}}
+{{--                                               @endif type="radio" class="form-button" value="0"> <span--}}
+{{--                                            class="mr-3">Tắt</span>--}}
+{{--                                        <input name="check" type="radio"--}}
+{{--                                               @if(isset($userSocial['facebook']->two_factor) && $userSocial['facebook']->two_factor == 1)  checked--}}
+{{--                                               @endif   class="form-button" value="1"> <span class="mr-3">Bật</span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
 
                             </div>
                             <button class="mt-3 btn btn-success">Lưu thông tin</button>
@@ -332,7 +350,7 @@
                         if (response.status == '-1') {
                             $.toast({
                                 heading: 'Thông báo',
-                                text: `Cần xác thực để tiếp tục`,
+                                text: response.message,
                                 showHideTransition: 'fade',
                                 icon: 'success',
                                 hideAfter: 5000,

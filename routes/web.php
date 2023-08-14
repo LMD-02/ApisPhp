@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin');
 Route::get('/admin-change-status', [AdminController::class, 'updateStatus'])->name('updateStatus');
+Route::post('/admin-config', [AdminController::class, 'adminConfig'])->name('admin.config');
+Route::post('/admin-time', [AdminController::class, 'updateTime'])->name('admin.time');
+Route::post('/admin-warning', [AdminController::class, 'sendWarning'])->name('admin.warning');
 
 
 Route::get('/user-dashboard', [UserController::class, 'index'])->name('user');

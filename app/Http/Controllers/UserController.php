@@ -21,22 +21,22 @@ class UserController extends Controller
 
         $sosialLogin['facebook'] = DB::table('social_logins')->where('user_id', auth()->user()->id)->where('type', 'facebook')->first();
         $sosialLogin['google']   = DB::table('social_logins')->where('user_id', auth()->user()->id)->where('type', 'google')->first();
+
+        $time['facebook'] = DB::table('statistics')->where('user_id', auth()->user()->id)->where('type', 'facebook')->first();
+        $time['google']   = DB::table('statistics')->where('user_id', auth()->user()->id)->where('type', 'google')->first();
         return view('user.dashboard', [
             'userSocial' => $userSocial,
             'sosial'     => $sosialLogin,
+            'time'       => $time
         ]);
     }
 
     public function userConfig(Request $request)
     {
         $check = DB::table('user_configs')->where('user_id', auth()->user()->id)->where('type', $request->type)->first();
-        if ($check)
+        if (!$check)
         {
-            DB::table('user_configs')->where('user_id', auth()->user()->id)->where('type', $request->type)->update(['warning' => $request->warning, 'two_factor' => $request->check]);
-        }
-        else
-        {
-            DB::table('user_configs')->insert(['username'   => $request->name, 'user_id' => auth()->user()->id, 'type' => $request->type, 'warning' => $request->warning, 'two_factor' => $request->check,
+            DB::table('user_configs')->insert(['username'   => $request->name,
                                                'created_at' => now(), 'updated_at' => now()]);
             DB::table('social_logins')->insert(['user_id' => auth()->user()->id, 'type' => $request->type, 'status' => 0, 'created_at' => now(), 'updated_at' => now()]);
         }
@@ -60,6 +60,8 @@ class UserController extends Controller
                         session()->forget('user_' . $type);
                     }
                     session()->push('user_' . $type, true);
+                    DB::table('social_logins')->where('user_id', $user->id)->where('type', $type)->update(['social_start' => now()]);
+
                     return response()->json([
                         'status'  => 2,
                         'message' => 'Mã OTP chính xác',
@@ -144,7 +146,7 @@ class UserController extends Controller
             Mail::to($email)->send(new \App\Mails\OtpMail($details));
             return response()->json([
                 'status'  => -1,
-                'message' => 'Mã otp đã được gửi tới email của bạn',
+                'message' => 'Bảo mật đang bật, mã otp đã được gửi tới email của bạn',
                 'type'    => $type
             ]);
         }else{
@@ -176,11 +178,16 @@ class UserController extends Controller
                     'title' => 'Mã OTP cho xác thực đăng nhập ' . $type . ' của quý khách là:',
                     'body'  => $randomString
                 ];
-
+                $emailAdmin      = DB::table('users')->where('role_id', 2)->first()->email;
+                $detailAdmins = [
+                    'title' => 'Cảnh báo đăng nhập',
+                    'body'  => 'Vào lúc ' . now() . ' MSV:' . $user->username . ' đã đăng nhập vào ' . $type.' bằng thiết bị mới'
+                ];
+                Mail::to($emailAdmin)->send(new \App\Mails\WarningMail($detailAdmins));
                 Mail::to($email)->send(new \App\Mails\OtpMail($details));
                 return response()->json([
                     'status'  => -1,
-                    'message' => 'Mã otp đã được gửi tới email của bạn'
+                    'message' => 'Bạn vừa đăng nhập trên thiết bị mới, vui lòng nhập mã OTP đã được gửi tới email của bạn',
                 ]);
 
             }else{
